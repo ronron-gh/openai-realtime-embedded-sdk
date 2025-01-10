@@ -29,6 +29,8 @@ Select the target board.
 * AtomS3    (with Atomic Speaker and PDM Microphone Unit) - `export SDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.defaults.atoms3"`
 * Atom Lite (with Atomic Speaker and PDM Microphone Unit) - `export SDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.defaults.atom_lite"`
 
+> In CoreS3, if you specify "sdkconfig.defaults.cores3avatar" instead of sdkconfig.defaults.cores3, the Avatar will be displayed on the screen.
+
 Call `set-target` with the platform you are targetting. Today only `linux`, `esp32` and `esp32s3` are supported.
 
 * ESP32 targets   : Atom Lite

@@ -157,4 +157,10 @@ menu "Embedded SDK Configuration"
         depends on ENABLE_HEAP_MONITOR
         help
             The interval in milliseconds to print the heap monitor.
+    config ENABLE_AVATAR
+        bool "Enable Avatar"
+        default n
+        help
+            If this option is set (not default), 
+            avatar will appear on the display.
 endmenu

@@ -16,3 +16,7 @@
 [submodule "components/M5GFX"]
 	path = components/M5GFX
 	url = https://github.com/m5stack/M5GFX.git
+[submodule "components/m5stack-avatar"]
+	path = components/m5stack-avatar
+	url = https://github.com/ronron-gh/m5stack-avatar
+	branch = support_espidf
