@@ -321,3 +321,7 @@ void oai_send_audio(PeerConnection *peer_connection) {
   peer_connection_send_audio(peer_connection, encoder_output_buffer,
                              encoded_size);
 }
+
+opus_int16* get_audio_out_buf() {
+  return output_buffer;
+}

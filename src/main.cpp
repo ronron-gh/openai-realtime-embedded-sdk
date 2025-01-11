@@ -32,6 +32,37 @@ const Expression expressions_table[] = {
   Expression::Sad,
   Expression::Angry
 };
+
+void lipSync(void *args)
+{
+  float gazeX, gazeY;
+  int level = 0;
+  opus_int16* buf;
+  DriveContext *ctx = (DriveContext *)args;
+  Avatar *avatar = ctx->getAvatar();
+  for (;;)
+  {
+    buf = get_audio_out_buf();
+    if(buf != NULL){
+      level = abs(buf[0]) * 2;
+    }else{
+      level = 0;
+    }
+
+    //if(level<100) level = 0;
+    if(level > 15000)
+    {
+      level = 15000;
+    }
+    float open = (float)level/15000.0;
+    avatar->setMouthOpenRatio(open);
+    avatar->getGaze(&gazeY, &gazeX);
+    avatar->setRotation(gazeX * 5);
+    //ESP_LOGI(LOG_TAG, "Audio output level: %d", level);
+    
+    vTaskDelay(pdMS_TO_TICKS(50));
+  }
+}
 #endif
 
 extern "C" void app_main(void) {
@@ -77,7 +108,7 @@ extern "C" void app_main(void) {
 #endif
 
   avatar.init();
-  //avatar.addTask(lipSync, "lipSync");
+  avatar.addTask(lipSync, "lipSync");
   //avatar.addTask(servo, "servo");
   //avatar.setSpeechFont(&fonts::efontJA_16);   //これを有効にすると、現状のパーティション設定だとプログラム領域オーバー
 #endif  //CONFIG_ENABLE_AVATAR
