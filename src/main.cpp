@@ -1,3 +1,4 @@
+#define CONFIG_ENABLE_SERVO
 #include "main.h"
 
 #include <esp_event.h>
@@ -19,6 +20,7 @@ constexpr const char* TAG = "main";
 #ifdef CONFIG_ENABLE_HEAP_MONITOR
 static esp_timer_handle_t s_monitor_timer;
 #endif // CONFIG_ENABLE_HEAP_MONITOR
+
 
 #ifdef CONFIG_ENABLE_AVATAR
 //M5Canvas canvas = M5Canvas(&M5.Lcd);    //M5GFX test
@@ -63,6 +65,29 @@ void lipSync(void *args)
     vTaskDelay(pdMS_TO_TICKS(50));
   }
 }
+
+bool servo_home = false;
+
+void servo(void *args)
+{
+  float gazeX, gazeY;
+  DriveContext *ctx = (DriveContext *)args;
+  Avatar *avatar = ctx->getAvatar();
+  for (;;)
+  {
+#ifdef CONFIG_ENABLE_SERVO
+    if(!servo_home)
+    {
+      avatar->getGaze(&gazeY, &gazeX);
+      //ESP_LOGI(LOG_TAG, "Servo Pan: %.5f Tilt %.5f", gazeX, gazeY);
+      servo_set_angle((int)(60.0 * gazeX), (int)(15.0 * gazeY));
+    } else {
+      //robot->servo->moveToOrigin();
+    }
+#endif
+    vTaskDelay(pdMS_TO_TICKS(5000));
+  }
+}
 #endif
 
 extern "C" void app_main(void) {
@@ -95,6 +120,11 @@ extern "C" void app_main(void) {
   cfg.internal_mic = false;
   M5.begin(cfg);
 
+#ifdef CONFIG_ENABLE_SERVO
+  servo_init();
+  //servo_test();
+#endif
+
 #ifdef CONFIG_ENABLE_AVATAR
 #if 0 //M5GFX test
   canvas.setColorDepth(8);  // カラーモード設定
@@ -109,7 +139,7 @@ extern "C" void app_main(void) {
 
   avatar.init();
   avatar.addTask(lipSync, "lipSync");
-  //avatar.addTask(servo, "servo");
+  avatar.addTask(servo, "servo");
   //avatar.setSpeechFont(&fonts::efontJA_16);   //これを有効にすると、現状のパーティション設定だとプログラム領域オーバー
 #endif  //CONFIG_ENABLE_AVATAR
 

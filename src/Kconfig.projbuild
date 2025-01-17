@@ -163,4 +163,49 @@ menu "Embedded SDK Configuration"
         help
             If this option is set (not default), 
             avatar will appear on the display.
+    config ENABLE_SERVO
+        bool "Enable Servo"
+        depends on ENABLE_AVATAR
+        default n
+        help
+            If this option is set (not default), 
+            Pan and Tilt servos move in conjunction with the Avatar.
+    config SERVO_PULSE_GPIO_PAN
+        int "Pan servo GPIO pin number"
+        depends on ENABLE_SERVO
+        default 18
+        help
+            Pan servo GPIO pin number.
+            (CoreS3 PortA:1 PortB:8 PortC:18)
+    config SERVO_PULSE_GPIO_TILT
+        int "Tilt servo GPIO pin number"
+        depends on ENABLE_SERVO
+        default 17
+        help
+            Tilt servo GPIO pin number.
+            (CoreS3 PortA:2 PortB:9 PortC:17)
+    config SERVO_MIN_DEGREE_PAN
+        int "Pan servo angle minimum"
+        depends on ENABLE_SERVO
+        default -40
+        help
+            Pan servo angle minimum.
+    config SERVO_MAX_DEGREE_PAN
+        int "Pan servo angle maximum"
+        depends on ENABLE_SERVO
+        default 40
+        help
+            Pan servo angle maximum.
+    config SERVO_MIN_DEGREE_TILT
+        int "Tilt servo angle minimum"
+        depends on ENABLE_SERVO
+        default -20
+        help
+            Tilt servo angle minimum.
+    config SERVO_MAX_DEGREE_TILT
+        int "Tilt servo angle maximum"
+        depends on ENABLE_SERVO
+        default 0
+        help
+            Tilt servo angle maximum.
 endmenu

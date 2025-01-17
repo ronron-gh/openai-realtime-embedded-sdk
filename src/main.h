@@ -13,4 +13,8 @@ void oai_audio_decode(uint8_t *data, size_t size);
 void oai_webrtc();
 void oai_http_request(char *offer, char *answer);
 
+void servo_init(void);
+void servo_set_angle(int angle_pan, int angle_tilt);
+void servo_test(void);
+
 opus_int16* get_audio_out_buf();
